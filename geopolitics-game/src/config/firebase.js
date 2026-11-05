@@ -11,23 +11,24 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Replace these placeholder values with your Firebase Console Project credentials
 const firebaseConfig = {
-
-  apiKey: "AIzaSyCAN4zY4TUJOm6Zg2tnx-E3vfSgBc1t9CA",
-
-  authDomain: "uct-geopolitics-game.firebaseapp.com",
-
-  projectId: "uct-geopolitics-game",
-
-  storageBucket: "uct-geopolitics-game.firebasestorage.app",
-
-  messagingSenderId: "906340483701",
-
-  appId: "1:906340483701:web:74ceb7e1b3bcc903ceae3c"
-
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+const missingConfig = Object.entries(firebaseConfig)
+  .filter(([, value]) => !value)
+  .map(([key]) => key);
+
+if (missingConfig.length) {
+  throw new Error(
+    `Missing Firebase configuration: ${missingConfig.join(', ')}. Add the values to geopolitics-game/.env.local.`
+  );
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
