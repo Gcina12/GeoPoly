@@ -11,15 +11,6 @@ const FACE_NORMALS = [
   new THREE.Vector3(0, 0, 1),
   new THREE.Vector3(0, 0, -1)
 ];
-const PIPS = {
-  1: [[1, 1]],
-  2: [[0, 0], [2, 2]],
-  3: [[0, 0], [1, 1], [2, 2]],
-  4: [[0, 0], [0, 2], [2, 0], [2, 2]],
-  5: [[0, 0], [0, 2], [1, 1], [2, 0], [2, 2]],
-  6: [[0, 0], [0, 1], [0, 2], [2, 0], [2, 1], [2, 2]]
-};
-
 function createFaceTexture(value, color, pipColor) {
   const canvas = document.createElement('canvas');
   canvas.width = 256;
@@ -39,15 +30,18 @@ function createFaceTexture(value, color, pipColor) {
   context.lineWidth = 2;
   context.strokeRect(23, 23, 210, 210);
 
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.font = '900 156px Arial, sans-serif';
+  context.lineJoin = 'round';
+  context.lineWidth = 12;
+  context.strokeStyle = 'rgba(10,18,24,.75)';
+  context.strokeText(String(value), 128, 128);
   context.fillStyle = pipColor;
-  context.shadowColor = 'rgba(0,0,0,.4)';
-  context.shadowBlur = 7;
-  context.shadowOffsetY = 3;
-  for (const [column, row] of PIPS[value]) {
-    context.beginPath();
-    context.arc(64 + column * 64, 64 + row * 64, 17, 0, Math.PI * 2);
-    context.fill();
-  }
+  context.shadowColor = 'rgba(0,0,0,.55)';
+  context.shadowBlur = 8;
+  context.shadowOffsetY = 5;
+  context.fillText(String(value), 128, 128);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
